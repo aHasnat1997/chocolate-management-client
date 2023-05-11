@@ -3,9 +3,11 @@ import { Link, useLoaderData } from "react-router-dom";
 import { BsPencilFill, BsFillTrashFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 
 
 const Home = () => {
+  useTitle('Home');
   const loadChocolates = useLoaderData();
   const [chocolates, setChocolates] = useState(loadChocolates);
 

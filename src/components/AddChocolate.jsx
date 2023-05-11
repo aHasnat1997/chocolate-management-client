@@ -2,8 +2,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useTitle } from '../hooks/useTitle';
 
 const AddChocolate = () => {
+  useTitle('Add Item')
   const addChocolate = e => {
     e.preventDefault();
     const form = e.target;

@@ -2,9 +2,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useTitle } from '../hooks/useTitle';
 
 
 const UpdateChocolate = () => {
+  useTitle('Update')
   const chocolateInfo = useLoaderData();
   console.log(chocolateInfo);
 
