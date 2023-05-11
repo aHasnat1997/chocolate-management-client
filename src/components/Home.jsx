@@ -1,14 +1,48 @@
 import { Button, Table } from "react-bootstrap";
 import { Link, useLoaderData } from "react-router-dom";
 import { BsPencilFill, BsFillTrashFill } from "react-icons/bs";
-// import { useState } from "react";
+import Swal from "sweetalert2";
+import { useState } from "react";
 
 
 const Home = () => {
-  const chocolates = useLoaderData();
-  // const [chocolates, setChocolates] = useState([]);
+  const loadChocolates = useLoaderData();
+  const [chocolates, setChocolates] = useState(loadChocolates);
 
-  console.log(chocolates);
+  // console.log(chocolates);
+
+  const handleDelete = id => {
+    console.log(id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        fetch(`http://localhost:5000/chocolates/${id}`, {
+          method: 'DELETE'
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            if (data.deletedCount > 0) {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+              const remaining = chocolates.filter(chocolate => chocolate._id !== id);
+              setChocolates(remaining);
+            }
+          })
+      }
+    })
+  }
 
   return (
     <div className="container">
@@ -32,8 +66,10 @@ const Home = () => {
               <td>{chocolate.country}</td>
               <td>{chocolate.category}</td>
               <td>
-                <Button variant="success" className="me-2"><BsPencilFill /></Button>
-                <Button variant="danger"><BsFillTrashFill /></Button>
+                <Link to={`/update/${chocolate._id}`}>
+                  <Button variant="success" className="me-2"><BsPencilFill /></Button>
+                </Link>
+                <Button onClick={() => handleDelete(chocolate._id)} variant="danger"><BsFillTrashFill /></Button>
               </td>
             </tr>)
           }
